@@ -3,8 +3,9 @@
   "description": "Log actions & mutations in vuex! 🚀",
   "version": "0.0.0",
   "main": "src/index.js",
-  "repository": "https://github.com/benwinding/quill-html-edit-button",
-  "author": "Ben Winding <ben.winding@gmail.com>",
+  "homepage": "https://github.com/benwinding/vuex-trace",
+  "repository": "https://github.com/benwinding/vuex-trace",
+  "author": "Ben Winding <hello@benwinding.com>",
   "license": "MIT",
 	"scripts": {
 		"watch": "webpack --watch --progress",
