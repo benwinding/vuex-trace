@@ -1,4 +1,4 @@
-// Credits: borrowed code from fcomb/redux-logger
+// Credits: borrowed code from vuejs/vuex
 
 import { deepCopy } from './util'
 
@@ -17,7 +17,7 @@ export default function createLogger ({
       }
       const nextState = deepCopy(state)
 
-      if (filter(action, prevState, nextState)) {
+      if (filter(type, prevState, nextState)) {
         const time = new Date()
         const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`
         const message = 'action ' + type + formattedTime

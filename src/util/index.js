@@ -1,3 +1,5 @@
+// Credits: borrowed code from vuejs/vuex
+
 /**
  * Get the first item that pass the test
  * by second argument function

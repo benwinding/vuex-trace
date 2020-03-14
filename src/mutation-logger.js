@@ -1,4 +1,4 @@
-// Credits: borrowed code from fcomb/redux-logger
+// Credits: borrowed code from vuejs/vuex
 
 import { deepCopy } from './util'
 
