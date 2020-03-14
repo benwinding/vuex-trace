@@ -1,56 +1,67 @@
 // Credits: borrowed code from vuejs/vuex
 
-import { deepCopy } from './util'
+import { deepCopy } from "./util";
+import defaultConsole from "./util/default-console";
 
-export default function createLogger ({
+export default function createLogger({
   collapsed = true,
   filter = (action, stateBefore, stateAfter) => true,
   transformer = state => state,
-  logger = console
+  logger = new defaultConsole()
 } = {}) {
   return store => {
-    let prevState = deepCopy(store.state)
+    let prevState = deepCopy(store.state);
 
     store.subscribeAction(({ type, payload }, state) => {
-      if (typeof logger === 'undefined') {
-        return
+      if (typeof logger === "undefined") {
+        return;
       }
-      const nextState = deepCopy(state)
+      const nextState = deepCopy(state);
 
       if (filter(type, prevState, nextState)) {
-        const time = new Date()
-        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`
-        const message = 'action ' + type + formattedTime
-        const startMessage = collapsed
-          ? logger.groupCollapsed
-          : logger.group
+        const time = new Date();
+        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(
+          time.getMinutes(),
+          2
+        )}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`;
+        const message = `→ Action ${type}${formattedTime}`;
 
         // render
+        const messageArgs = [`%c${message}`, "background: #aed581;"];
         try {
-          startMessage.call(logger, message)
+          if (collapsed) {
+            logger.groupCollapsed(...messageArgs);
+          } else {
+            logger.group(...messageArgs);
+          }
         } catch (e) {
-          console.log(message)
+          console.log(...messageArgs);
         }
 
-        logger.log('%c payload', 'color: #9E9E9E; font-weight: bold', { payload })
-        logger.log('%c state', 'color: #4CAF50; font-weight: bold', transformer(nextState))
+        const groupBaseStyle = "font-size:10pt; padding:1px 8px; background: #ddd;";
+        logger.log("%cpayload", groupBaseStyle + "color: #333;", {
+          payload
+        });
+        logger.log("%cstate", groupBaseStyle + "color: #4CAF50;", {
+          nextState: transformer(nextState)
+        });
 
         try {
-          logger.groupEnd()
+          logger.groupEnd();
         } catch (e) {
-          logger.log('—— log end ——')
+          logger.log("—— log end ——");
         }
       }
 
-      prevState = nextState
-    })
-  }
+      prevState = nextState;
+    });
+  };
 }
 
-function repeat (str, times) {
-  return (new Array(times + 1)).join(str)
+function repeat(str, times) {
+  return new Array(times + 1).join(str);
 }
 
-function pad (num, maxLength) {
-  return repeat('0', maxLength - num.toString().length) + num
+function pad(num, maxLength) {
+  return repeat("0", maxLength - num.toString().length) + num;
 }

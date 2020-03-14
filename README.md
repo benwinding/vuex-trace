@@ -12,6 +12,8 @@
 
 Log actions & mutations in vuex! 🚀
 
+![screenshot](https://i.imgur.com/OwHzlgT.gif)
+
 ## Usage
 
 ``` js

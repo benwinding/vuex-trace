@@ -1,59 +1,71 @@
 // Credits: borrowed code from vuejs/vuex
 
-import { deepCopy } from './util'
+import { deepCopy } from "./util";
+import defaultConsole from "./util/default-console";
 
-export default function createLogger ({
+export default function createLogger({
   collapsed = true,
   filter = (mutation, stateBefore, stateAfter) => true,
   transformer = state => state,
   mutationTransformer = mut => mut,
-  logger = console
+  logger = new defaultConsole()
 } = {}) {
   return store => {
-    let prevState = deepCopy(store.state)
+    let prevState = deepCopy(store.state);
 
     store.subscribe((mutation, state) => {
-      if (typeof logger === 'undefined') {
-        return
+      if (typeof logger === "undefined") {
+        return;
       }
-      const nextState = deepCopy(state)
+      const nextState = deepCopy(state);
 
       if (filter(mutation, prevState, nextState)) {
-        const time = new Date()
-        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`
-        const formattedMutation = mutationTransformer(mutation)
-        const message = `mutation ${mutation.type}${formattedTime}`
-        const startMessage = collapsed
-          ? logger.groupCollapsed
-          : logger.group
-
+        const time = new Date();
+        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(
+          time.getMinutes(),
+          2
+        )}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`;
+        const formattedMutation = mutationTransformer(mutation);
+        const message = `↻ Mutation ${mutation.type}${formattedTime}`;
         // render
+        const messageArgs = [`%c${message}`, "background: #ffb74d;"];
         try {
-          startMessage.call(logger, message)
+          if (collapsed) {
+            logger.groupCollapsed(...messageArgs);
+          } else {
+            logger.group(...messageArgs);
+          }
         } catch (e) {
-          console.log(message)
+          console.log(...messageArgs);
         }
 
-        logger.log('%c prev state', 'color: #9E9E9E; font-weight: bold', transformer(prevState))
-        logger.log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation)
-        logger.log('%c next state', 'color: #4CAF50; font-weight: bold', transformer(nextState))
+        const groupBaseStyle = "font-size:10pt; padding:1px 8px; background: #ddd;";
+        logger.log("%cprev state", groupBaseStyle + "color: #9E9E9E;", {
+          prevState: transformer(prevState)
+        });
+        logger.log("%cmutation", groupBaseStyle + "color: #03A9F4;", {
+          formattedMutation: formattedMutation
+        });
+        logger.log("%cnext state", groupBaseStyle + "color: #4CAF50;", {
+          nextState: transformer(nextState)
+        });
 
         try {
-          logger.groupEnd()
+          logger.groupEnd();
         } catch (e) {
-          logger.log('—— log end ——')
+          logger.log("—— log end ——");
         }
       }
 
-      prevState = nextState
-    })
-  }
+      prevState = nextState;
+    });
+  };
 }
 
-function repeat (str, times) {
-  return (new Array(times + 1)).join(str)
+function repeat(str, times) {
+  return new Array(times + 1).join(str);
 }
 
-function pad (num, maxLength) {
-  return repeat('0', maxLength - num.toString().length) + num
+function pad(num, maxLength) {
+  return repeat("0", maxLength - num.toString().length) + num;
 }
