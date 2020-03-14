@@ -1,5 +1,15 @@
 # vuex-trace
 
+<!-- [START badges] -->
+
+[![NPM Version](https://img.shields.io/npm/v/vuex-trace.svg)](https://www.npmjs.com/package/vuex-trace)
+[![License](https://img.shields.io/npm/l/vuex-trace.svg)](https://github.com/benwinding/vuex-trace/blob/master/LICENSE)
+[![Downloads/week](https://img.shields.io/npm/dm/vuex-trace.svg)](https://www.npmjs.com/package/vuex-trace)
+[![Github Issues](https://img.shields.io/github/issues/benwinding/vuex-trace.svg)](https://github.com/benwinding/vuex-trace)
+![Build](https://github.com/benwinding/vuex-trace/workflows/Build%20and%20Publish/badge.svg)
+
+<!-- [END badges] -->
+
 Log actions & mutations in vuex! 🚀
 
 ## Usage
@@ -18,24 +28,34 @@ const store = new Vuex.Store({
 
 ## Options
 
+Options are based on the options from vuex's [built-in-loggin-plugin](https://vuex.vuejs.org/guide/plugins.html#built-in-logger-plugin)
+
 ``` js
 // Mutation logger options
 mutationLogger({
-  collapsed = true,
-  filter = (mutation, stateBefore, stateAfter) => true,
-  transformer = state => state,
-  mutationTransformer = mut => mut,
-  logger = console
+  // Start with log group open
+  collapsed: true,
+  // Filter specific types of mutations
+  filter: (mutation, stateBefore, stateAfter) => true,
+  // Transform state during output
+  transformer: state => state,
+  // Transform mutation during output
+  mutationTransformer: mut => mut,
+  // Custom logger implementation
+  logger: console
 })
 
 // Action logger options
 actionLogger({
-  collapsed = true,
-  filter = (action, stateBefore, stateAfter) => true,
-  transformer = state => state,
-  logger = console
+  // Start with log group open
+  collapsed: true,
+  // Filter specific types of actions
+  filter: (action, stateBefore, stateAfter) => true,
+  // Transform state during output
+  transformer: state => state,
+  // Custom logger implementation
+  logger: console
 })
-
 ```
 
 ## Credit
