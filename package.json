@@ -1,5 +1,5 @@
 {
-  "name": "vuex-log",
+  "name": "vuex-trace",
   "description": "Log actions & mutations in vuex! 🚀",
   "version": "0.0.0",
   "main": "src/index.js",

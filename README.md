@@ -1,4 +1,4 @@
-# Vuex-log
+# vuex-trace
 
 Log actions & mutations in vuex! 🚀
 
