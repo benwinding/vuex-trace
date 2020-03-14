@@ -3,23 +3,38 @@
   "description": "Log actions & mutations in vuex! 🚀",
   "version": "0.0.0",
   "main": "src/index.js",
+  "bugs": {
+    "url": "https://github.com/benwinding/vuex-trace/issues",
+    "email": "hello@benwinding.com"
+  },
   "homepage": "https://github.com/benwinding/vuex-trace",
   "repository": "https://github.com/benwinding/vuex-trace",
   "author": "Ben Winding <hello@benwinding.com>",
   "license": "MIT",
-	"scripts": {
-		"watch": "webpack --watch --progress",
-		"build": "webpack --mode production",
-		"build-dev": "webpack --mode development"
-	},
+  "keywords": [
+    "vue",
+    "vuex",
+    "log",
+    "logging",
+    "logger",
+    "trace",
+    "redux",
+    "actions",
+    "mutations"
+  ],
+  "scripts": {
+    "watch": "webpack --watch --progress",
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
-		"babel-loader": "^7.1.3",
-		"babel-plugin-transform-object-assign": "^6.22.0",
-		"babel-plugin-transform-remove-console": "^6.9.4",
-		"babel-preset-env": "^1.6.1",
-		"jshint": "^2.9.5",
-		"webpack": "^4.1.0",
-		"webpack-cli": "^3.2.1"
+    "babel-loader": "^7.1.3",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "babel-preset-env": "^1.6.1",
+    "jshint": "^2.9.5",
+    "webpack": "^4.1.0",
+    "webpack-cli": "^3.2.1"
   }
 }

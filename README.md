@@ -30,7 +30,7 @@ const store = new Vuex.Store({
 
 ## Options
 
-Options are based on the options from vuex's [built-in-loggin-plugin](https://vuex.vuejs.org/guide/plugins.html#built-in-logger-plugin)
+Options are based on the options from vuex's [built-in-logger-plugin](https://vuex.vuejs.org/guide/plugins.html#built-in-logger-plugin)
 
 ``` js
 // Mutation logger options
