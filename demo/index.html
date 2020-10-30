@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/vue@2"></script>
+    <script src="https://unpkg.com/vuex@3"></script>
+    <script src="../dist/index-dev.min.js"></script>
+    <!-- <script src="https://unpkg.com/vuex-trace@0.0.5/dist/index.min.js" ></script>     -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      .flex-container {
+        display: flex;
+      }
+
+      .flex-item {
+        margin: 5px;
+      }
+
+      .todo-text {
+        flex-grow: 2;
+      }
+
+      .search-bar {
+        flex-grow: 2;
+      }
+
+      .main-card {
+        margin-top: 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div id="app">
+        <div class="card main-card">
+          <div class="card-block">
+            <div class="flex-container">
+              <input
+                v-model="newTodoText"
+                class="text form-control flex-item"
+              />
+              <button v-on:click="addTodo" class="btn btn-primary flex-item">
+                Add Todo
+              </button>
+            </div>
+
+            <input v-model="doneFilter" type="checkbox" /> Show only done
+          </div>
+
+          <ul class="list-group list-group-flush">
+            <li v-for="todo in todos" class="list-group-item flex-container">
+              <p class="flex-item todo-text">{{todo.text}}</p>
+
+              <button
+                v-on:click="toggleDone(todo)"
+                class="btn btn-default flex-item"
+              >
+                {{todo.done ? "Done" : "Not Done"}}
+              </button>
+              <button
+                v-on:click="removeTodo(todo)"
+                class="btn btn-danger flex-item"
+              >
+                Remove
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      var store = new Vuex.Store({
+        plugins: [vuexTrace.mutationLogger(), vuexTrace.actionLogger()],
+        state: {
+          todos: [],
+        },
+        mutations: {
+          addTodo(state, todoText) {
+            state.todos.push({
+              text: todoText,
+              done: false,
+            });
+          },
+
+          removeTodo(state, todo) {
+            var index = state.todos.indexOf(todo);
+            if (index >= 0) {
+              state.todos.splice(index, 1);
+            }
+          },
+
+          updateTodo(state, todo) {
+            var index = state.todos.indexOf(todo);
+            if (index >= 0) {
+              state.todos[index] = todo;
+            }
+          },
+
+          loadJSON(state, json) {
+            state.todos = JSON.parse(json);
+          },
+        },
+        getters: {
+          doneTodos(state) {
+            return state.todos.filter((todo) => todo.done);
+          },
+
+          allTodos(state) {
+            return state.todos;
+          },
+
+          toJSON(state) {
+            return JSON.stringify(state.todos);
+          },
+        },
+      });
+      new Vue({
+        el: "#app",
+        store,
+        data: function () {
+          return {
+            newTodoText: "",
+            doneFilter: false,
+          };
+        },
+        methods: {
+          saveState() {
+            localStorage.setItem("todos", this.$store.getters.toJSON);
+          },
+          loadState() {
+            if (localStorage.getItem("todos")) {
+              this.$store.commit("loadJSON", localStorage.getItem("todos"));
+            }
+          },
+          addTodo() {
+            if (this.newTodoText != "") {
+              this.$store.commit("addTodo", this.newTodoText);
+              this.newTodoText = "";
+              this.saveState();
+            }
+          },
+
+          removeTodo(todo) {
+            this.$store.commit("removeTodo", todo);
+            this.saveState();
+          },
+
+          toggleDone(todo) {
+            if (todo.done) {
+              todo.done = false;
+            } else {
+              todo.done = true;
+            }
+
+            this.$store.commit("updateTodo", todo);
+            this.saveState();
+          },
+        },
+        computed: {
+          todos() {
+            if (this.doneFilter) {
+              return this.$store.getters.doneTodos;
+            } else {
+              return this.$store.getters.allTodos;
+            }
+          },
+        },
+        mounted: function () {
+          this.loadState();
+        },
+      });
+
+      Vue.use(store);
+    </script>
+  </body>
+</html>

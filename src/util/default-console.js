@@ -1,5 +1,9 @@
-const defaultStyle =
-  "color: #000;background: #777;font-size:12pt;font-weight:normal;padding:2px 10px;border-radius:5px;";
+import { isDarkMode } from "./index";
+
+const isDark = isDarkMode();
+const defaultBg = isDark ? '#ddd' : '#777';
+const defaultText = '#000';
+const defaultStyle = `color: ${defaultText}; background: ${defaultBg};font-size:12pt;font-weight:normal;padding:2px 10px;border-radius:5px;`;
 
 export default class defaultLogger {
   constructor() {}

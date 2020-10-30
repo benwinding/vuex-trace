@@ -1,6 +1,6 @@
 // Credits: borrowed code from vuejs/vuex
 
-import { deepCopy } from "./util";
+import { deepCopy, isDarkMode } from "./util";
 import defaultConsole from "./util/default-console";
 
 export default function createLogger({
@@ -12,6 +12,8 @@ export default function createLogger({
 } = {}) {
   return store => {
     let prevState = deepCopy(store.state);
+
+    const IS_DARK = isDarkMode();
 
     store.subscribe((mutation, state) => {
       if (typeof logger === "undefined") {
@@ -39,7 +41,8 @@ export default function createLogger({
           console.log(...messageArgs);
         }
 
-        const groupBaseStyle = "font-size:10pt; padding:1px 8px; background: #ddd;";
+        const bgColor = IS_DARK ? '#222' : '#ddd'
+        const groupBaseStyle = `font-size:10pt; padding:1px 8px; background: ${bgColor};`;
         logger.log("%cprev state", groupBaseStyle + "color: #9E9E9E;", {
           prevState: transformer(prevState)
         });

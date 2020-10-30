@@ -1,3 +1,8 @@
+export function isDarkMode() {
+  const isDarkTheme = !!window.matchMedia && !!window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return isDarkTheme;
+}
+
 // Credits: borrowed code from vuejs/vuex
 
 /**

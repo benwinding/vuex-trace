@@ -10,6 +10,8 @@ module.exports = [
     output: {
       filename: isProd ? "[name].min.js" : '[name]-dev.min.js',
       path: path.resolve(__dirname, "dist"),
+      library: isProd ? undefined : 'vuexTrace',
+      libraryTarget: isProd ? undefined : 'umd',
       publicPath: "/dist/"
     },
     devtool: isProd ? undefined : "inline-source-map",
